@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+</head>
+<body>
+    <h1>Currency Converter</h1>
+
+    <label for="amount">Enter Amount in GBP:</label>
+    <input type="text" id="amount" placeholder="Enter amount">
+
+    <label for="fromCurrency">Convert From:</label>
+    <select id="fromCurrency">
+        <option value="GBP">GBP</option>
+        <option value="Euro">Euro</option>
+    </select>
+
+    <label for="toCurrency">Convert To:</label>
+    <select id="toCurrency">
+        <option value="Euro">Euro</option>
+        <option value="GBP">GBP</option>
+    </select>
+
+    <button onclick="calculate()">Calculate</button>
+
+    <h3 id="result"></h3>
+
+    <script>
+        // Exchange rates
+        let exchangeRateGBPtoEuro = 1.17;
+        let exchangeRateEurotoGBP = 0.85;
+
+        function calculate() {
+            let amount = parseFloat(document.getElementById('amount').value);
+            let fromCurrency = document.getElementById('fromCurrency').value;
+            let toCurrency = document.getElementById('toCurrency').value;
+
+            if (!isNaN(amount)) {
+                let result = convertCurrency(amount, fromCurrency, toCurrency);
+                displayResult(amount, fromCurrency, toCurrency, result);
+            } else {
+                alert('Please enter a valid amount.');
+            }
+        }
+
+        function convertCurrency(amount, fromCurrency, toCurrency) {
+            if (fromCurrency === 'GBP' && toCurrency === 'Euro') {
+                return amount * exchangeRateGBPtoEuro;
+            } else if (fromCurrency === 'Euro' && toCurrency === 'GBP') {
+                return amount * exchangeRateEurotoGBP;
+            } else {
+                return amount; // Default if currencies are the same or invalid
+            }
+        }
+
+        function displayResult(amount, fromCurrency, toCurrency, result) {
+            let resultElement = document.getElementById('result');
+            resultElement.textContent = `Amount ${amount} ${fromCurrency} is equivalent to ${result.toFixed(2)} ${toCurrency} at the exchange rate of ${getExchangeRate(fromCurrency, toCurrency).toFixed(2)}.`;
+        }
+
+        function getExchangeRate(fromCurrency, toCurrency) {
+            if (fromCurrency === 'GBP' && toCurrency === 'Euro') {
+                return exchangeRateGBPtoEuro;
+            } else if (fromCurrency === 'Euro' && toCurrency === 'GBP') {
+                return exchangeRateEurotoGBP;
+            } else {
+                return 1.0; // Default if currencies are the same or invalid
+            }
+        }
+    </script>
+</body>
+</html>
